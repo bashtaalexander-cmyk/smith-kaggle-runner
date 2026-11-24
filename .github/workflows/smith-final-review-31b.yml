@@ -1,0 +1,71 @@
+name: SMITH final review 31B evaluation
+on:
+  push:
+    paths:
+      - '.github/workflows/smith-final-review-31b.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency: smith-final-review-31b
+jobs:
+  starter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 48
+    steps:
+      - run: python -m pip install kaggle==1.8.4
+      - name: Run a private copy of the official starter on Kaggle
+        env:
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p starter evidence
+          kaggle kernels pull ryanholbrook/getting-started-gemma-4-developer-agent -m -p starter
+          export KERNEL="alexbashta/smith-final-review-31b-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          meta_path = Path("starter/kernel-metadata.json")
+          meta = json.loads(meta_path.read_text())
+          notebook_path = meta_path.parent / meta["code_file"]
+          notebook = json.loads(notebook_path.read_text())
+          old = "MODEL_NAME = 'gemma-4-12b-it-qat-w4a16-ct'"
+          new = "MODEL_NAME = 'gemma-4-31b-it-qat-w4a16-ct'"
+          count = 0
+          for cell in notebook["cells"]:
+              source = cell["source"]
+              source = "".join(source) if isinstance(source, list) else source
+              count += source.count(old) + source.count(new)
+              cell["source"] = source.replace(old, new)
+          assert count == 1, "Unexpected starter model selection"
+          assert meta["enable_gpu"] and not meta["enable_internet"]
+          assert meta["machine_shape"] == "NvidiaL4"
+          assert any("31b" in model for model in meta["model_sources"])
+          candidate = "from pathlib import Path\n\nAGENT_DIR = WORKING_DIR / 'smith_final_review_31b'\nAGENT_DIR.mkdir()\n(AGENT_DIR / 'agent.yaml').write_text(\"\"\"name: smith_final_review_31b\nmodel: gemma-4-31b-it-qat-w4a16-ct\ninstruction: !include system.md\ntools:\n  - run_command\n  - read_file\n  - edit_file\n  - write_file\n  - submit_patch\n\"\"\")\n(AGENT_DIR / 'system.md').write_text(\"\"\"Fix the reported software behavior in the local repository. Use the issue's own symbols and paths to locate the implementation. Search tracked code once with git grep, then read short relevant ranges. If the report is underspecified, inspect the nearest existing implementation or automation before choosing a minimal change. Once the mechanism is clear, edit immediately. Use workspace-relative paths. Reserve three calls for final review, correction if necessary, and submit_patch. In the review call run git status --short, git diff --check, and git diff --stat. Confirm an intended implementation change exists, and inspect unexpected files. Remove only temporary files you created, preserving intended source and test changes. If feasible, run one narrow test. Submit promptly. Keep tool output short.\n\"\"\")\n(AGENT_DIR / 'eval_config.yaml').write_text(\"\"\"evaluation:\n  timeout_seconds: 180\n  verification_timeout_seconds: 180\n  max_tool_calls: 24\n  max_time_minutes: 30\n\"\"\")"
+          model_cell = next(c for c in notebook["cells"] if new in c["source"] and "from swegemma.models import load_tasks" in c["source"])
+          model_cell["source"] += "\n" + candidate
+          eval_cell = next(c for c in notebook["cells"] if "SAMPLE_TASKS = tasks[:2]" in c["source"])
+          eval_cell["source"] = eval_cell["source"].replace("SAMPLE_TASKS = tasks[:2]", "by_id = {task.instance_id: task for task in tasks}\nSAMPLE_TASKS = [by_id[key] for key in ('rich_3454', 'fastapi_14609', 'requests_7328', 'rich_3063', 'fastapi_15763', 'requests_7309')]")
+          eval_cell["source"] = eval_cell["source"].replace("display(submission_df)", "submission_df.to_json(WORKING_DIR / 'predictions.jsonl', orient='records', lines=True)\ndisplay(submission_df)")
+          notebook_path.write_text(json.dumps(notebook))
+          meta.pop("id_no", None)
+          meta.update(id=os.environ["KERNEL"], title=os.environ["KERNEL"].split("/")[1].replace("-", " ").title(), is_private=True)
+          meta_path.write_text(json.dumps(meta))
+          print("Kaggle notebook:", "https://www.kaggle.com/code/" + meta["id"])
+          PY
+          kaggle kernels push -p starter --accelerator NvidiaL4 -t 2400 2>&1 | tee evidence/push.log
+          for attempt in $(seq 1 84); do
+            status="$(kaggle kernels status "$KERNEL" 2>&1)"
+            printf '%s %s\n' "$(date -u +%FT%TZ)" "$status" | tee -a evidence/status.log
+            case "${status,,}" in
+              *complete*) kaggle kernels output "$KERNEL" -p evidence/output; exit 0 ;;
+              *error*|*cancel*) kaggle kernels output "$KERNEL" -p evidence/output || true; exit 1 ;;
+            esac
+            sleep 30
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smith-final-review-31b-evidence
+          path: evidence/
