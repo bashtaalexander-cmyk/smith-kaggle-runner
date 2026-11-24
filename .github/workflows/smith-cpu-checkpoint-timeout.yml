@@ -1,0 +1,55 @@
+name: SMITH CPU checkpoint timeout
+on:
+  push:
+    paths:
+      - '.github/workflows/smith-cpu-checkpoint-timeout.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency: smith-cpu-checkpoint-timeout
+jobs:
+  starter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - run: python -m pip install kaggle==1.8.4
+      - name: Run a private copy of the official starter on Kaggle
+        env:
+          KAGGLE_API_TOKEN: ${{ secrets.KAGGLE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p starter evidence
+          kaggle kernels pull ryanholbrook/getting-started-gemma-4-developer-agent -m -p starter
+          export KERNEL="alexbashta/smith-cpu-checkpoint-timeout-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          meta_path = Path("starter/kernel-metadata.json")
+          meta = json.loads(meta_path.read_text())
+          ipynb = meta_path.parent / meta["code_file"]
+          nb = json.loads(ipynb.read_text())
+          src = "from pathlib import Path\nimport os\nimport time\n\ntarget = Path('/kaggle/working/checkpoint.jsonl')\npending = target.with_suffix('.tmp')\nwith pending.open('w') as stream:\n    stream.write('{\"synthetic\": true, \"sequence\": 1}\\n')\n    stream.flush()\n    os.fsync(stream.fileno())\npending.replace(target)\nprint('Synthetic checkpoint committed', flush=True)\ntime.sleep(420)\n"
+          nb["cells"] = [dict(cell_type="code", source=src, metadata={}, outputs=[], execution_count=None, id="manifest")]
+          ipynb.write_text(json.dumps(nb))
+          for key in ("id_no", "machine_shape", "docker_image"):
+              meta.pop(key, None)
+          meta.update(id=os.environ["KERNEL"], title=os.environ["KERNEL"].split("/")[1], is_private=True, enable_gpu=False, model_sources=[], dataset_sources=[], competition_sources=[])
+          meta_path.write_text(json.dumps(meta))
+          PY
+          kaggle kernels push -p starter -t 300 2>&1 | tee evidence/push.log
+          for attempt in $(seq 1 20); do
+            status="$(kaggle kernels status "$KERNEL" 2>&1)"
+            printf '%s %s\n' "$(date -u +%FT%TZ)" "$status" | tee -a evidence/status.log
+            case "${status,,}" in
+              *complete*) kaggle kernels output "$KERNEL" -p evidence/output; exit 0 ;;
+              *error*|*cancel*|*timeout*) kaggle kernels output "$KERNEL" -p evidence/output || true; exit 1 ;;
+            esac
+            sleep 30
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smith-cpu-checkpoint-timeout-evidence
+          path: evidence/
