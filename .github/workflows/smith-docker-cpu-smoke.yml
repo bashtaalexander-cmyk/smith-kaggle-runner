@@ -1,0 +1,21 @@
+name: SMITH Docker CPU smoke
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check Docker and run minimal image
+        run: |
+          docker version
+          docker info --format '{{.ServerVersion}} {{.OSType}}/{{.Architecture}}'
+          docker pull docker.io/library/alpine:3.23
+          docker image inspect --format '{{index .RepoDigests 0}}' docker.io/library/alpine:3.23
+          docker build --pull=false --tag smith-cpu-smoke - <<'EOF'
+          FROM docker.io/library/alpine:3.23
+          CMD ["echo","SMITH Docker CPU smoke"]
+          EOF
+          docker image inspect --format '{{.Id}}' smith-cpu-smoke
+          docker run --rm --network none smith-cpu-smoke
