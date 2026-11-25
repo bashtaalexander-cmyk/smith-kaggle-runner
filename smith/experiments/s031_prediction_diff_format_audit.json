@@ -1,0 +1,158 @@
+[
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "d22a48bcada692f4e3a4dee22f98bc7747b4a9c346b3d5dcd844cee6df020d6f",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/fastapi_14609.patch",
+    "raw_bytes": 5560,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:177",
+    "raw_parse_exit": 128,
+    "raw_sha256": "0ebc1f3594d453fe852ab8c716de0b8b4f50c4627d95182b715a56004c262e26"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "60f886a268f8f644f075550d3435d34f916a66964ea89afdb1474064a48ae83c",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/fastapi_15763.patch",
+    "raw_bytes": 1671,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:53",
+    "raw_parse_exit": 128,
+    "raw_sha256": "e6047a9096c0529a7efd2410683abfb73e24ec56585f9d7ba739692a01435745"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 2,
+      "reconstructed_sha256": "b4fa32a7748593dd9c4709a9bdc4b64c1fb25ebbc994f82efae421fa7683107f",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/requests_7309.patch",
+    "raw_bytes": 1700,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:54",
+    "raw_parse_exit": 128,
+    "raw_sha256": "069f3a5d164da2a8a4e5f174b4fd8f5f79f439f0f972973d8724e8a3e5379b51"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "1ce60a0fc7d81c90b1e668acd0fd8cf045a1018f664d39331128dd2ed2f3032c",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/requests_7328.patch",
+    "raw_bytes": 884,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:20",
+    "raw_parse_exit": 128,
+    "raw_sha256": "f7752a74fb009ae43871065dc9d7ca98d46cbf0e30a20616719ac412f038d06f"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "c322c827f01db0117f60672d47efdda4c10bde8f74257e9fd2d2e3b74aa3a7d1",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/rich_3063.patch",
+    "raw_bytes": 456,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:19",
+    "raw_parse_exit": 128,
+    "raw_sha256": "05b98453bd901466152a6ded9b7589a9138743104f839c517c2c320ae7dd2c44"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 1,
+      "reconstructed_sha256": "0e6d660c0ffba63633e49e5226661913a3454694d1328269c7e50f11be9b106d",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/baseline/raw_patches/rich_3454.patch",
+    "raw_bytes": 654,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:12",
+    "raw_parse_exit": 128,
+    "raw_sha256": "029b88beae875057f016857280086e4b8d9a889c5ff987d02d82e34ae9ba9704"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "331e9889061556696e5f237a70c660f87b3834059b19a1081b87a6804f4655a3",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/fastapi_14609.patch",
+    "raw_bytes": 19003,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:613",
+    "raw_parse_exit": 128,
+    "raw_sha256": "0c3ec01149706c28a16ae2f22756b44c981822864ca46de3d526e87d0d291690"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "9b3045d2083321b6b7f0a60b62516ff16f43f3816ad91514edeadf42c417709e",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/fastapi_15763.patch",
+    "raw_bytes": 2194,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:70",
+    "raw_parse_exit": 128,
+    "raw_sha256": "5da36e1ffd83a581b9c81a734bcd8594896d6b5a1cf4d322baaa3f0668a65d4f"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 2,
+      "reconstructed_sha256": "2ce6840427adfa9fa8d9b3b2122a85ac13a6ffe017c04acab5bc27aa9a8ca8e2",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/requests_7309.patch",
+    "raw_bytes": 1501,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:40",
+    "raw_parse_exit": 128,
+    "raw_sha256": "404f3eb296b52214e4846d57a41360a91029ef96beaa26d8b3e114d9cb0dc659"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "2f6bfb726962d5c67dfdca6e15ff1efcdba31812f8586903e024254505c9497d",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/requests_7328.patch",
+    "raw_bytes": 535,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:13",
+    "raw_parse_exit": 128,
+    "raw_sha256": "15995da9ed071ddad239645658c4ccea15d4a4223662b1b5d887add9bb8d2bcc"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 0,
+      "reconstructed_sha256": "e3fb2dfaa3c69257b581a3d8f07da93fedc8571cd7a8876d11cff0fe69db9347",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/rich_3063.patch",
+    "raw_bytes": 2364,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "<stdin>:30: trailing whitespace.",
+    "raw_parse_exit": 128,
+    "raw_sha256": "faeed148d6a2f84253fd0d72fcad2c803d04e38db66b39ab53ad4e028235d220"
+  },
+  {
+    "minimal_diagnostic_reconstruction": {
+      "blank_context_lines_added": 1,
+      "reconstructed_sha256": "aecc2e340ad978ce069b055aab03438f5fed482b0470536c97e622e4a6419ff5",
+      "terminal_newline_added": true
+    },
+    "path": "s029_out/repeat/raw_patches/rich_3454.patch",
+    "raw_bytes": 1066,
+    "raw_ends_newline": false,
+    "raw_error_first_line": "error: corrupt patch at <stdin>:28",
+    "raw_parse_exit": 128,
+    "raw_sha256": "d5605880e59a82543e422f8323801ee3b72449bdcad01d38af5e407ddaa4b613"
+  }
+]
