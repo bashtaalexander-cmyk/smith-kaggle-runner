@@ -1,0 +1,25 @@
+{
+  "files": [
+    "agent.yaml",
+    "eval_config.yaml",
+    "system.md",
+    "README.md"
+  ],
+  "limits": {
+    "max_time_minutes": 30,
+    "max_tool_calls": 24,
+    "timeout_seconds": 180,
+    "verification_timeout_seconds": 180
+  },
+  "model": "gemma-4-31b-it-qat-w4a16-ct",
+  "source_blob_parity": true,
+  "tools": [
+    "run_command",
+    "read_file",
+    "edit_file",
+    "write_file",
+    "submit_patch"
+  ],
+  "zip_sha256": "7fc91e660435fbc7e7cce1a0f744a77d8628db2b3b21d8f3688876ac298893e7",
+  "zip_size": 1755
+}
